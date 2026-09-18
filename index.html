@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <!--
+      CSP is intentionally permissive for 'script-src'/'style-src' because
+      Pyodide + Monaco require WebAssembly.instantiate and eval-based module
+      loading. We still restrict:
+        - allowed script/network origins (self + jsdelivr for Pyodide)
+        - inline object embedding
+        - form actions
+        - base tag injection
+      This limits what user-supplied Python that escapes the tracer sandbox
+      could reach if the JS-import block were ever bypassed.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+               script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: https://cdn.jsdelivr.net;
+               style-src  'self' 'unsafe-inline' https://cdn.jsdelivr.net;
+               font-src   'self' data: https://cdn.jsdelivr.net;
+               img-src    'self' data: blob:;
+               connect-src 'self' https://cdn.jsdelivr.net https://pypi.org https://files.pythonhosted.org;
+               worker-src 'self' blob:;
+               child-src  blob:;
+               object-src 'none';
+               base-uri   'self';
+               form-action 'self';
+               frame-ancestors 'none';"
+    />
+    <title>Algorithm Visualizer</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
